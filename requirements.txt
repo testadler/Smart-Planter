@@ -8,5 +8,5 @@ RPi.GPIO~=0.7.1
 Flask-FontAwesome~=0.1.5
 smbus
 Adafruit_DHT
-sqlite3
+db-sqlite3
 Pygments~=2.11.2
