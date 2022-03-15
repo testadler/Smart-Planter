@@ -1,0 +1,12 @@
+colorama~=0.4.4
+pip~=21.3.1
+wheel~=0.37.0
+setuptools~=59.8.0
+Cython~=0.29.26
+waitress~=2.1.0
+RPi.GPIO~=0.7.1
+Flask-FontAwesome~=0.1.5
+smbus
+Adafruit_DHT
+sqlite3
+Pygments~=2.11.2
