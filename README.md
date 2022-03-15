@@ -13,7 +13,7 @@ mittels
 Datareader.py - Ließt die Sensordaten aus und speicher sie in der Datenbank ( SQLLite ) unter /db ab
 Server.py - Stellt das Dashboard und steuert das Display sowie die Pins fürs Relay
 
-Mit PM2 lass ich die beiden Processe Parallel laufen und kann über das Dashboard entsprechend die Dienste neustarten lassen
+Mit PM2 lass ich die beiden Prozesse Parallel laufen und kann über das Dashboard entsprechend die Dienste neustarten lassen
 (per Dashboard wird dann der PM2 Process restartet welches meine beiden Scripts startet. 
 
 Der PM2 Daemon startet beim booten automatisch die beiden Scripts neu und killt eventuelle alten Instanzen.
