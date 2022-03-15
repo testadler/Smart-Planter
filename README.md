@@ -18,3 +18,6 @@ Mit PM2 lass ich die beiden Processe Parallel laufen und kann über das Dashboar
 
 Der PM2 Daemon startet beim booten automatisch die beiden Scripts neu und killt eventuelle alten Instanzen.
 
+Installation der benötigten Pakete unter Python3
+
+pip3 install -r requirements.txt
