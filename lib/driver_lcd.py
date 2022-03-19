@@ -17,7 +17,8 @@ Made available under GNU GENERAL PUBLIC LICENSE
 import sys
 # LCD Address
 sys.path.insert(0, "/settings/")
-import display
+sys.path.insert(0, "/lib/")
+import lib.display as display
 # i2c bus (0 -- original Pi, 1 -- Rev 2 Pi)
 I2CBUS = display.diplay_I2CBUS
 

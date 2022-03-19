@@ -10,3 +10,9 @@ smbus
 Adafruit_DHT
 db-sqlite3
 Pygments~=2.11.2
+opencv >= 3.6.2
+numpy >= 1.13.3
+python-constraint >= 1.4.0
+cv2-tools
+imagezmq
+imutils

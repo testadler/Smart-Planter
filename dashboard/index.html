@@ -7,7 +7,7 @@
     <title>{{v_Application}}</title>
 
      <!-- Bootstrap core CSS -->
-
+<script src="http://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
 <link href="/static/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" rel="stylesheet">
 
@@ -25,16 +25,12 @@
           font-size: 3.5rem;
         }
       }
-            #chartdiv {
-            width: 50%;
-            height: 350px;
-            }
+
     </style>
 
 
     <!-- Custom styles for this template -->
     <link href="/static/dashboard.css" rel="stylesheet">
-
   </head>
   <body>
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
@@ -106,105 +102,280 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
+        <h1 class="h2">Sensoren</h1>
 
-      </div>
+       </div>   <div class="row align-items-start">
+    <div class="col">
+      Letzte Messung : <div class="btn-group">
+    {% for sensor in sensor_data1 %}
+        <a href="/Sensors/#{{ sensor_data1[sensor].name }}" class="btn btn-success">{{ sensor_data1[sensor].name }} {{ sensor_data1[sensor].value }}</a>
+    {% endfor %}</div>
+    </div>
+  </div>
+<br>
+       <div class="row align-items-start">
+                      <div class="col">
 
+<div id="webcam" style="background:black;max-width:480px, 350px;min-height: 350px;"><img src="/{{lastpic}}"></div>
+                          </div>
+                      <div class="col">
+<div class="btn-group-vertical" role="group" aria-label="Button group with nested dropdown">
 
-
- <script>
-window.onload = function () {
-
-var Temperatur = {
-    zoomEnabled: true,
-	exportEnabled: true,
-	animationEnabled: true,
-
-	title: {
-		text: "Temperatur"
-	},
-	data: [
-	{
-	    lineColor: "blue",
-	    color: "blue",
-	    xValueFormatString: "DD-MM-YYYY",
-	    yValueFormatString: "##.#°C",
-		type: "splineArea",
-		legendText: "Raumtemperatur",
-		showInLegend: true,
-		dataPoints: [
- {% for sensor in sensor_daten %}
-    {% if sensor_daten[sensor].Type== "Temperatur" %}
-       { x: new Date{{sensor_daten[sensor].DATE}}, y: {{sensor_daten[sensor].VALUE}}},
-    {% else %}
-    {% endif %}
- {% endfor %}]
-		}
-	]
-};
-var Feuchtigkeit = {
-    zoomEnabled: true,
-	exportEnabled: true,
-	animationEnabled: true,
-	title: {
-		text: "Luftfeuchtigkeit"
-	},
-	data: [
-	{
-	    lineColor: "darkgreen",
-	    color: "darkgreen",
-	    xValueFormatString: "DD-MM-YYYY",
-	    yValueFormatString: "##.#%",
-	    legendText: "Luftfeuchtigkeit",
-	    showInLegend: true,
-		type: "splineArea",
-		dataPoints: [
- {% for sensor in sensor_daten %}
-    {% if sensor_daten[sensor].Type== "Feuchtigkeit" %}
-       { x: new Date{{sensor_daten[sensor].DATE}}, y: {{sensor_daten[sensor].VALUE}}},
-    {% else %}
-    {% endif %}
- {% endfor %}]
-		}
-	]
-};
-$("#TemperaturChart").CanvasJSChart(Temperatur);
-$("#FeuchtigkeitChart").CanvasJSChart(Feuchtigkeit);
-}
-</script>
-        <div id="TemperaturChart" style="height: 300px; width: 48%;"></div>
-        <div id="FeuchtigkeitChart" style="height: 300px; width: 48%;"></div>
-         <table><tr>
-             <th>Quick Control</th></tr>
-             <tr>
-
-                 <td>
                      {% for pin in lights %}
 
    {% if lights[pin].state == false %}
 
-      <a class="btn btn-block btn-lg btn-danger" href="/LIGHT/{{pin}}/on/index" role="button"> <span class="bi bi-brightness-low"></span>{{ lights[pin].name }} Einschalten</a>
+    <a type="button" class="btn btn-block btn-lg btn-danger" href="/LIGHT/{{pin}}/on/index" role="button"> <span class="bi bi-brightness-low"></span>{{ lights[pin].name }} Einschalten</a>
    {% else %}
 
-      <a class="btn btn-block btn-lg btn-primary" href="/LIGHT/{{pin}}/off/index" role="button"> <span class="bi bi-brightness-high"></span> {{ lights[pin].name }} Ausschalten</a>
+    <a type="button" class="btn btn-block btn-lg btn-primary" href="/LIGHT/{{pin}}/off/index" role="button"> <span class="bi bi-brightness-high"></span> {{ lights[pin].name }} Ausschalten</a>
    {% endif %}
    {% endfor %}
-</td>
-</tr>
-<tr>
-                    <td>
+
                           {% for pin in pumps %} {% if pumps[pin].state == false %}
 
-                    <a class="btn btn-block btn-lg btn-danger" href="/Pump/{{pin}}/on/index" role="button"> <span class="bi bi-droplet"></span>{{ pumps[pin].name }} Einschalten</a>
+                    <a type="button" class="btn btn-block btn-lg btn-danger" href="/Pump/{{pin}}/on/index" role="button"> <span class="bi bi-droplet"></span>{{ pumps[pin].name }} Einschalten</a>
                    {% else %}
 
-                    <a class="btn btn-block btn-lg btn-primary" href="/Pump/{{pin}}/off/index" role="button"> <span class="bi bi-droplet-fill"></span> {{ pumps[pin].name }} Ausschalten</a>
+                    <a type="button" class="btn btn-block btn-lg btn-primary" href="/Pump/{{pin}}/off/index" role="button"> <span class="bi bi-droplet-fill"></span> {{ pumps[pin].name }} Ausschalten</a>
                       {% endif %}
                       {% endfor %}
-                    </td></tr></table></div>
-</div>
+                          </div>
+</div></div>
+        <div class="row align-items-start">
+    <div class="col" >
+      <canvas id="Temperatur" style="width:100%,height:400px"></canvas>
+    </div>
+    <div class="col" >
+      <canvas id="Feuchtigkeit" style="width:100%,height:400px"></canvas>
+    </div>
 
-</main>
+  </div>
+
+
+
+
+     </div>
+</div>
+  </main>
+ <script>
+
+var ctx = document.getElementById('Temperatur').getContext('2d');
+    var Tempdata = {
+  "labels": [{% for sensor in sensor_daten %}{% if sensor_daten[sensor].Type== "Temperatur" %}"{{sensor_daten[sensor].TIME}}",{% else %}{% endif %}{% endfor %}],
+  "datasets": [
+    {
+      "label": "Temperatur in °C",
+      "backgroundColor": "#51877b",
+      "fill": true,
+      "data": [{% for sensor in sensor_daten %}{% if sensor_daten[sensor].Type== "Temperatur" %}"{{sensor_daten[sensor].VALUE}}",{% else %}{% endif %}{% endfor %}],
+      "borderColor": "#ffffff",
+      "borderWidth": "1",
+      "lineTension": 0
+    }
+  ]
+};
+    var options = {
+  "title": {
+    "display": true,
+    "text": "Temperaturdaten der letzten Stunden",
+    "position": "top",
+    "fullWidth": false,
+    "fontColor": "#212121",
+    "fontSize": 14
+  },
+  "legend": {
+    "display": true,
+    "fullWidth": true,
+    "position": "top"
+  },
+  "scales": {
+    "yAxes": [
+      {
+        "ticks": {
+          "beginAtZero": true,
+          "display": true
+        },
+        "gridLines": {
+          "display": true,
+          "lineWidth": 2,
+          "drawOnChartArea": true,
+          "drawTicks": true,
+          "tickMarkLength": 1,
+          "offsetGridLines": true,
+          "zeroLineColor": "#FFFFFF",
+          "color": "#d6d6d6",
+          "zeroLineWidth": 2
+        },
+        "scaleLabel": {
+          "display": true,
+          "labelString": "Temperatur in °C"
+        },
+        "display": true,
+        "type": "linear",
+        "position": "left"
+      }
+    ],
+    "xAxes": {
+
+      "0": {
+        "ticks": {
+          "display": true,
+          "fontSize": 9,
+          "fontStyle": "italic"
+        },
+        "display": true,
+        "gridLines": {
+          "display": true,
+          "lineWidth": 2,
+          "drawOnChartArea": false,
+          "drawTicks": true,
+          "tickMarkLength": 12,
+          "zeroLineWidth": 2,
+          "offsetGridLines": true,
+          "color": "#942192",
+          "zeroLineColor": "#FFFFFF"
+        },
+        "scaleLabel": {
+          "fontSize": 16,
+          "display": true,
+          "fontStyle": "normal"
+        }
+      }
+    }
+  },
+  "tooltips": {
+    "enabled": true,
+    "mode": "label",
+    "caretSize": 10,
+    "backgroundColor": "#00fa92"
+  },
+  "elements": {
+    "line": {
+      "lineTension": 0,
+      "borderCapStyle": "round",
+      "fill": true
+    }
+  }
+};
+
+    var myTemperatur = new Chart(ctx, {
+        type: 'line',
+        data: Tempdata,
+        options: options
+    });
+
+</script>
+
+
+
+ <script>
+
+var ctx = document.getElementById('Feuchtigkeit').getContext('2d');
+    var data = {
+  "labels": [{% for sensor in sensor_daten %}{% if sensor_daten[sensor].Type== "Feuchtigkeit" %}"{{sensor_daten[sensor].TIME}}",{% else %}{% endif %}{% endfor %}],
+  "datasets": [
+    {
+      "label": "Messwert %",
+      "backgroundColor": "#4a81a1",
+      "fill": true,
+      "data": [{% for sensor in sensor_daten %}{% if sensor_daten[sensor].Type== "Feuchtigkeit" %}"{{sensor_daten[sensor].VALUE}}",{% else %}{% endif %}{% endfor %}],
+      "borderColor": "#ffffff",
+      "borderWidth": "1",
+      "lineTension": 0
+    }
+  ]
+};
+    var options = {
+  "title": {
+    "display": true,
+    "text": "Feuchtigkeit",
+    "position": "top",
+    "fullWidth": true,
+    "fontColor": "#212121",
+    "fontSize": 16
+  },
+  "legend": {
+    "display": true,
+    "fullWidth": true,
+    "position": "top"
+  },
+  "scales": {
+    "yAxes": [
+      {
+        "ticks": {
+          "beginAtZero": true,
+          "display": true
+        },
+        "gridLines": {
+          "display": true,
+          "lineWidth": 2,
+          "drawOnChartArea": true,
+          "drawTicks": true,
+          "tickMarkLength": 1,
+          "offsetGridLines": true,
+          "zeroLineColor": "#FFFFFF",
+          "color": "#d6d6d6",
+          "zeroLineWidth": 2
+        },
+        "scaleLabel": {
+          "display": true,
+          "labelString": "Feuchtigkeit"
+        },
+        "display": true,
+        "type": "linear",
+        "position": "left"
+      }
+    ],
+    "xAxes": {
+      "0": {
+        "ticks": {
+          "display": true,
+          "fontSize": 9,
+          "fontStyle": "italic"
+        },
+        "display": true,
+        "gridLines": {
+          "display": true,
+          "lineWidth": 2,
+          "drawOnChartArea": false,
+          "drawTicks": true,
+          "tickMarkLength": 12,
+          "zeroLineWidth": 2,
+          "offsetGridLines": true,
+          "color": "#942192",
+          "zeroLineColor": "#FFFFFF"
+        },
+        "scaleLabel": {
+          "fontSize": 16,
+          "display": true,
+          "fontStyle": "normal"
+        }
+      }
+    }
+  },
+  "tooltips": {
+    "enabled": true,
+    "mode": "label",
+    "caretSize": 10,
+    "backgroundColor": "#00fa92"
+  },
+  "elements": {
+    "line": {
+      "lineTension": 0,
+      "borderCapStyle": "round",
+      "fill": true
+    }
+  }
+};
+
+    var myFeuchtigkeit = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: options
+    });
+
+</script>
 <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
 <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
 <script src="/static/bootstrap.bundle.min.js"></script>

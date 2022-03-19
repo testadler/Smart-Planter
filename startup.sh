@@ -9,7 +9,7 @@
 start() {
   pm2 kill
         ### Starte Datareader ####
-	pm2 start server.py --name Dashboard --interpreter python3 && pm2 start datareader.py --name Datareader --interpreter python3
+	pm2 start server.py --name Dashboard --interpreter python3 && pm2 start datareader.py --name Datareader --interpreter python3 && pm2 start timelaps.py --name Timelapse  --interpreter python3
 
         echo "Smartplanter wurde gestartet"
 }
